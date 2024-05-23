@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class BossHealth : MonoBehaviour
 {
     public int maxHealth = 100;
     private int currentHealth;
@@ -13,7 +13,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isInvulnerable) return; 
+        if (isInvulnerable) return;  
 
         currentHealth -= damage;
         if (currentHealth <= 0)

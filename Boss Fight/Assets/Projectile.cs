@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [SerializeField] float lifetime = 2f;
+    [SerializeField] int damageAmount = 1; 
 
     void Start()
     {
@@ -15,12 +16,21 @@ public class Projectile : MonoBehaviour
     {
         if (other.CompareTag("Boss"))
         {
-            // Handle collision with boss
-            Debug.Log("Projectile hit the boss: " + other.name);
+            
+            BossHealth bossHealth = other.GetComponent<BossHealth>();
+
+            
+            if (bossHealth != null)
+            {
+                bossHealth.TakeDamage(damageAmount);
+            }
+
+            
             Destroy(gameObject);
         }
     }
 }
+
 
 
 
