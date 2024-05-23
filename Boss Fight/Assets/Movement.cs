@@ -8,20 +8,24 @@ public class Move : MonoBehaviour
     [SerializeField] float jumpForce = 3;
     [SerializeField] float dashSpeed = 10f;
     [SerializeField] float dashDuration = 0.2f;
-    [SerializeField] float dashCooldown = 1f; 
+    [SerializeField] float dashCooldown = 1f;
+    [SerializeField] ContactFilter2D groundFilter;
     Vector2 inputDir = Vector2.zero;
     bool jump = false;
-    bool isDashing = false; 
+    bool isDashing = false;
+    bool grounded = false;
     float lastDashTime = 0f; 
     Rigidbody2D rb;
     Animator anim;
     SpriteRenderer sprite;
-    PlayerHealth playerHealth; 
+    PlayerHealth playerHealth;
+    BoxCollider2D coll;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        coll = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         playerHealth = GetComponent<PlayerHealth>(); 
@@ -30,6 +34,8 @@ public class Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        grounded = coll.IsTouching(groundFilter);
+
         if (!isDashing) 
         {
             Vector2 velocity = new Vector2(inputDir.x * speed, rb.velocity.y);
@@ -94,7 +100,13 @@ public class Move : MonoBehaviour
 
     private void Jump()
     {
-        rb.velocity = new Vector2(rb.velocity.x, 0);
-        rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+        if (grounded)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+
+
+            jump = false;
+        }
     }
 }
