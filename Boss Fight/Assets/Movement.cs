@@ -35,6 +35,7 @@ public class Move : MonoBehaviour
     void Update()
     {
         grounded = coll.IsTouching(groundFilter);
+        anim.SetBool("Run", inputDir.x != 0);
 
         if (!isDashing) 
         {
@@ -51,6 +52,15 @@ public class Move : MonoBehaviour
     public void SetMoveDir(InputAction.CallbackContext context)
     {
         inputDir = context.ReadValue<Vector2>();
+
+        if (inputDir.x > 0 && sprite.flipX) 
+        {
+            sprite.flipX = false;
+        }
+        if (inputDir.x < 0 && !sprite.flipX)
+        {
+            sprite.flipX = true;
+        }
     }
 
     public void ActiveJump(InputAction.CallbackContext context)
